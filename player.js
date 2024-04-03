@@ -2,7 +2,7 @@ const WebSocket = require('ws');
 
 // Game configuration
 const serverURL = 'ws://coresrv:9091';
-const playerName = 'PLAYER';
+const playerName = process.env.PLAYER || 'PLAYER';
 
 // WebSocket connection
 const ws = new WebSocket(serverURL);
@@ -51,8 +51,17 @@ ws.on('close', () => {
 // Function to send moves to the server
 function sendMove(originId, destinationId, shipCount) {
   const move = `MOV ${playerName} ${originId} ${destinationId} ${shipCount}`;
+  console.log('Sending data: ' + move);
   ws.send(move);
 }
+
+// Function to send upgrades to the server
+function sendUpgrade(destinationId) {
+  const move = `UPG ${playerName} ${destinationId}`;
+  console.log('Sending data: ' + move);
+  ws.send(move);
+}
+
 
 // Strategy function (to be implemented)
 function makeMove() {
@@ -62,8 +71,12 @@ function makeMove() {
   // Use the sendMove function to send moves to the server
   gameState.systems.forEach((system) => {
     if (system.fleets.length === 1 && system.fleets[0].owner === playerName && system.fleets[0].count > 25) {
-      let randomTarget = Math.floor(Math.random() * (gameState.systems.size - 0)) + 0;
-      sendMove(system.id, randomTarget, system.fleets[0].count - 7) 
+      if (Math.random() < 0.5) {
+        let randomTarget = Math.floor(Math.random() * (gameState.systems.size - 0)) + 0;
+        sendMove(system.id, randomTarget, system.fleets[0].count - 7)
+      } else {
+        sendUpgrade(system.id)
+      }
     }
   });
 }
