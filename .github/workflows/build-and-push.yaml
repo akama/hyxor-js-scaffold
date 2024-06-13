@@ -14,7 +14,7 @@ jobs:
   build:
     strategy:
       matrix:
-        arch: [buildjet-4vcpu-ubuntu-2204, buildjet-4vcpu-ubuntu-2204-arm]
+        arch: [buildjet-4vcpu-ubuntu-2204]
     runs-on: ${{ matrix.arch }}
     permissions:
       contents: read
