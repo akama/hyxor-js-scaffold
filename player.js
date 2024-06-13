@@ -70,10 +70,10 @@ function makeMove() {
   // Make decisions on which moves to make
   // Use the sendMove function to send moves to the server
   gameState.systems.forEach((system) => {
-    if (system.fleets.length === 1 && system.fleets[0].owner === playerName && system.fleets[0].count > 20) {
+    if (system.fleets.length === 1 && system.fleets[0].owner === playerName && system.fleets[0].count > 50) {
       if (Math.random() < 0.5) {
         let randomTarget = Math.floor(Math.random() * (gameState.systems.size - 0)) + 0;
-        sendMove(system.id, randomTarget, 20)
+        sendMove(system.id, randomTarget, 43)
       } else {
         sendUpgrade(system.id)
       }
